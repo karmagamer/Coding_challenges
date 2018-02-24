@@ -33,20 +33,40 @@ Time complexity required: O(n) where n is the size of the input string.
 Notice that a/aa/aaa/file1.txt is not the longest file path, if there is another path aaaaaaaaaaaaaaaaaaaaa/sth.png.
 */
 class Solution {
+  /*
+  Strategy is to create a Hashmap
+  */
     public int lengthLongestPath(String input) {
 
         int res = 0;
         Map<Integer, Integer> m = new HashMap<>();
+        // start with level 0 = 0 (value)
         m.put(0, 0);
+        //split the string by "\n" for levels
         for (String s : input.split("\n")) {
+          // int level is decided by "/t"
             int level = s.lastIndexOf("\t") + 1;
+            // len is just length of that folder/filename
             int len = s.substring(level).length();
-            if (s.contains(".")) {
+            // IF string contains a "." which means it must be file name. Put res = (that file name)
+            // Math.max find largest value between given arguemnts(a,b), so in this res = file1.txt which is 12(I blieve), but in the loop when it goes to final level res will be 32, so FINAL value will be 32. LOOK UP MATH.MAX for explanation
+             if (s.contains(".")) {
                 res = Math.max(res, m.get(level) + len);
-            } else {
+            } else {// just adds level and corresponding length
                 m.put(level + 1, m.get(level) + len + 1);
             }
         }
+        /* RUN FOLLOWING CODE TO CHECK OUTPUT OF EVERY LEVEL
+
+        for (m.Entry<String,String> entry : m.entrySet()) {
+  String key = entry.getKey();
+  String value = entry.getValue();
+  System.out.println(key + " and " +value);
+
+}
+*/
+
+
         return res;
     }
 }
